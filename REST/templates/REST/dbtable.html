@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+    <title>Database</title>
+</head>
+<body>
+    <div>
+        <form method="POST" action="{% url 'REST:dbtable' %}">{% csrf_token %}
+            <button type="submit">Delete all entries</button>
+        </form>
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Column1</th>
+                    <th>Column2</th>
+                    <th>Column3</th>
+                    <th>Column4</th>
+                    <th>Column5</th>
+                    <th>Column6</th>
+                    <th>Column7</th>
+                    <th>Column8</th>
+                    <th>Column9</th>
+                    <th>Column10</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in dbdata %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.column1 }}</td>
+                        <td>{{ i.column2 }}</td>
+                        <td>{{ i.column3 }}</td>
+                        <td>{{ i.column4 }}</td>
+                        <td>{{ i.column5 }}</td>
+                        <td>{{ i.column6 }}</td>
+                        <td>{{ i.column7 }}</td>
+                        <td>{{ i.column8 }}</td>
+                        <td>{{ i.column9 }}</td>
+                        <td>{{ i.column10 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Id</th>
+                    <th>Column1</th>
+                    <th>Column2</th>
+                    <th>Column3</th>
+                    <th>Column4</th>
+                    <th>Column5</th>
+                    <th>Column6</th>
+                    <th>Column7</th>
+                    <th>Column8</th>
+                    <th>Column9</th>
+                    <th>Column10</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+</html>

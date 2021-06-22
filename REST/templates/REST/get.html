@@ -1,0 +1,29 @@
+{% if browzer %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>GET</title>
+</head>
+<body>
+    <form class='border-2 border-black' action="{% url 'REST:getjsondata' %}" method="POST">
+        {% csrf_token %}
+        <div class=''>
+            <textarea rows="10" cols="50" name='testData' readonly>{{ json_data }}</textarea>
+            <input type='checkbox' name='checkbrowzer' checked hidden />
+            <button type='submit' class='border-2 border-black' name='get_data'>Get data</button>
+            {% if data_received %}
+                <button type='submit' class='border-2 border-black' name='decrypt'>decrypt data</button>
+            {% endif %}
+        </div>
+    </form>
+    <a href="{% url 'REST:view_data' %}">All test data</a>
+    <a href="{% url 'REST:dbtable' %}">See DB table</a>
+</body>
+</html>
+{% else %}
+    api
+{% endif %}
