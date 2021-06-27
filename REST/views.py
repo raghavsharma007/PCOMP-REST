@@ -181,7 +181,7 @@ def put(request):
 def dbtable(request):
     # getting all the data from the table
     dbdata = TestData.objects.all()
-    multiprocessing_func_encrypter.now('encrypt')
+    # multiprocessing_func_encrypter.now('encrypt')
 
     if request.method == 'POST':
         # for deleting all the entries in database
@@ -213,47 +213,6 @@ def decrypt(key, encryped, num=1):
     return ''.join(msg)
 
 
-
-# asynchronous encrypter
-@background(schedule=60)
-def multiprocessing_func_encrypter(task):
-    encryption_key = 'encryptionkey1234'
-    all_data = TestData.objects.all()
-    random_num = random.randint(1,10)
-    for i in all_data:
-        if i.random_encryptionNum != None and int(i.random_encryptionNum) != 0:
-            print('data is encrypted')
-            column1 = decrypt(encryption_key, i.column1, i.random_encryptionNum)
-            column2 = decrypt(encryption_key, i.column2, i.random_encryptionNum)
-            column3 = decrypt(encryption_key, i.column3, i.random_encryptionNum)
-            column4 = decrypt(encryption_key, i.column4, i.random_encryptionNum)
-            column5 = decrypt(encryption_key, i.column5, i.random_encryptionNum)
-            column6 = decrypt(encryption_key, i.column6, i.random_encryptionNum)
-            column7 = decrypt(encryption_key, i.column7, i.random_encryptionNum)
-            column8 = decrypt(encryption_key, i.column8, i.random_encryptionNum)
-            column9 = decrypt(encryption_key, i.column9, i.random_encryptionNum)
-            column10 = decrypt(encryption_key, i.column10, i.random_encryptionNum)
-        else:
-            print('data is not encrypted earlier')
-            column1, column2, column3, column4, column5, column6, column7, column8, column9, column10 = i.column1, i.column2, i.column3, i.column4, i.column5, i.column6, i.column7, i.column8, i.column9, i.column10
-
-        print('encrypting the data')
-        i.column1 = encrypt(encryption_key, column1, random_num)
-        i.column2 = encrypt(encryption_key, column2, random_num)
-        i.column3 = encrypt(encryption_key, column3, random_num)
-        i.column4 = encrypt(encryption_key, column4, random_num)
-        i.column5 = encrypt(encryption_key, column5, random_num)
-        i.column6 = encrypt(encryption_key, column6, random_num)
-        i.column7 = encrypt(encryption_key, column7, random_num)
-        i.column8 = encrypt(encryption_key, column8, random_num)
-        i.column9 = encrypt(encryption_key, column9, random_num)
-        i.column10 = encrypt(encryption_key, column10, random_num)
-        i.random_encryptionNum = random_num
-        print(column1, i.column1, random_num)
-        try:
-            i.save()
-        except:
-            print('error in datatype of postgreSQL')
 
 
 def func_decrypter(json_encrypted_data):
