@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import TestData, TaskName
+from .models import TestData
 
 admin.site.register(TestData)
-admin.site.register(TaskName)

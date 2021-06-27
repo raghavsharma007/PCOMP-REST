@@ -22,13 +22,3 @@ class TestData(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-class TaskName(models.Model):
-    task_name = models.CharField(max_length=50, null=True, blank=True)
-
-    class Meta:
-        # for admin panel view
-        verbose_name_plural = 'Tasks'
-
-    def __str__(self):
-        return str(self.task_name)

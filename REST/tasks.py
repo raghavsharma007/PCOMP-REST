@@ -3,12 +3,20 @@ from celery import shared_task
 from .models import TestData
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
+import random
 
 
 @shared_task
 def multifunc_post(test_data):
     for i in test_data:
         TestData.objects.create(column1=i['column1'], column2=i['column2'], column3=i['column3'],  column4=i['column4'],  column5=i['column5'], column6=i['column6'], column7=i['column7'], column8=i['column8'], column9=i['column9'], column10=i['column10'])
+    return None
+
+@shared_task
+def multifunc_put(test_data):
+    ids = TestData.objects.values_list('id', flat=True)[:25]
+    for index, i in enumerate(test_data):
+        TestData.objects.filter(pk=ids[index]).update(column1=i['column1'], column2=i['column2'], column3=i['column3'],  column4=i['column4'],  column5=i['column5'], column6=i['column6'], column7=i['column7'], column8=i['column8'], column9=i['column9'], column10=i['column10'])
     return None
 
 # encryption and decryption
@@ -32,7 +40,8 @@ def decrypt(key, encryped, num=1):
 
 
 
-@periodic_task(run_every=(crontab(minute='*/1')), name="dynamic db encryption", ignore_result=True)
+# @periodic_task(run_every=(crontab(minute='*/1')), name="dynamic db encryption", ignore_result=True)
+@shared_task
 def encrypt_db():
     encryption_key = 'encryptionkey1234'
     all_data = TestData.objects.all()

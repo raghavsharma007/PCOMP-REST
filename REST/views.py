@@ -2,33 +2,16 @@ from django.shortcuts import render
 import pandas as pd
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .models import TestData, TaskName
+from .models import TestData
 import ast
 import time
 from asgiref.sync import sync_to_async
 import numpy as np
 import multiprocessing
 from django.utils import timezone
-from background_task import background
 import random
 import hashlib
-from .tasks import multifunc_post
-
-
-# asynchronous tasks post
-@background(schedule=60)
-def multiprocessing_func(test_data):
-    # get current task
-    task_name = TaskName.objects.all()[0].task_name
-
-    if task_name == 'post':
-        for i in test_data:
-            TestData.objects.create(column1=i['column1'], column2=i['column2'], column3=i['column3'],  column4=i['column4'],  column5=i['column5'], column6=i['column6'], column7=i['column7'], column8=i['column8'], column9=i['column9'], column10=i['column10'])
-
-    elif task_name == 'put':
-        ids = TestData.objects.values_list('id', flat=True)[:25]
-        for index, i in enumerate(test_data):
-            TestData.objects.filter(pk=ids[index]).update(column1=i['column1'], column2=i['column2'], column3=i['column3'],  column4=i['column4'],  column5=i['column5'], column6=i['column6'], column7=i['column7'], column8=i['column8'], column9=i['column9'], column10=i['column10'])
+from .tasks import multifunc_post, encrypt_db, multifunc_put
 
 
 
@@ -114,9 +97,6 @@ def post(request):
             context = {'browzer': browzer}
             return render(request, 'REST/result.html', context)
     
-    # delete al previous tasks and create new tasks
-    TaskName.objects.all().delete()
-    TaskName.objects.create(task_name='post')
 
     # context of view
     context = {'json_data': json_data}
@@ -125,9 +105,6 @@ def post(request):
 
 @csrf_exempt
 def put(request):
-    # delete al previous tasks and create new tasks
-    TaskName.objects.all().delete()
-    TaskName.objects.create(task_name='put')
 
     # start timer
     startTimer = time.time()
@@ -145,7 +122,7 @@ def put(request):
 
         # updating data in database(parallel or simple)
         if 'parallel_put' in request.POST:
-            multiprocessing_func(test_data, schedule=timezone.now())
+            multifunc_put.delay(test_data)
         elif 'simple_put' in request.POST:
             ids = TestData.objects.values_list('id', flat=True)[:25]
             for index, i in enumerate(test_data):
@@ -181,15 +158,15 @@ def put(request):
 def dbtable(request):
     # getting all the data from the table
     dbdata = TestData.objects.all()
-    # multiprocessing_func_encrypter.now('encrypt')
 
     if request.method == 'POST':
         # for deleting all the entries in database
         TestData.objects.all().delete()
 
+    if TestData.objects.all().count() > 0:
+        encrypt_db.delay()
     context = {'dbdata': dbdata}
     return render(request, 'REST/dbtable.html', context)
-
 
 
 # securing REST APIs.(PART-2)
@@ -211,7 +188,6 @@ def decrypt(key, encryped, num=1):
         enc_c = ord(c)
         msg.append(chr((enc_c - key_c - int(num)) % 127))
     return ''.join(msg)
-
 
 
 
@@ -245,14 +221,13 @@ def testdataSerializer(multi_instance):
 
 
 def security(request):
-    TaskName.objects.all().delete()
     context = {}
     return render(request, 'REST/security.html', context)
 
 def getjsondata(request):
-    TaskName.objects.all().delete()
     # multiprocessing_func_encrypter.now('encrypt')
-
+    if TestData.objects.all().count() > 0:
+        encrypt_db.delay()
 
     # POST request
     if request.method == 'POST':
