@@ -163,8 +163,8 @@ def dbtable(request):
         # for deleting all the entries in database
         TestData.objects.all().delete()
 
-    if TestData.objects.all().count() > 0:
-        encrypt_db.delay()
+    # if TestData.objects.all().count() > 0:
+    #     encrypt_db.delay()
     context = {'dbdata': dbdata}
     return render(request, 'REST/dbtable.html', context)
 
@@ -226,8 +226,8 @@ def security(request):
 
 def getjsondata(request):
     # multiprocessing_func_encrypter.now('encrypt')
-    if TestData.objects.all().count() > 0:
-        encrypt_db.delay()
+    # if TestData.objects.all().count() > 0:
+    #     encrypt_db.delay()
 
     # POST request
     if request.method == 'POST':
