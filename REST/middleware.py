@@ -1,5 +1,4 @@
 from datetime import datetime
-from adminboard.models import CreateCandidate
 from django.utils.deprecation import MiddlewareMixin
 from .tasks import encrypt_db
 from .models import TestData
