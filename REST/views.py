@@ -208,7 +208,6 @@ def func_decrypter(json_encrypted_data):
         column9 = decrypt(encryption_key, i['column9'], random_encryptionNum)
         column10 = decrypt(encryption_key, i['column10'], random_encryptionNum)
         json_data.append({'column1': column1, 'column2': column2, 'column3': column3, 'column4': column4, 'column5': column5, 'column6': column6, 'column7': column7, 'column8': column8, 'column9': column9, 'column10': column10})
-        print(json_data)
     return json.dumps(json_data, indent=4)
 
 

@@ -13,7 +13,7 @@
     <form class='h-2/3 bg-blue-200 w-1/3 shadow-xl m-auto mt-8 flex justify-center items-center p-4' action="{% url 'REST:getjsondata' %}" method="POST">
         {% csrf_token %}
         <div class=''>
-            <textarea rows="5" cols="50" name='testData' class='border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-md' readonly>{{ json_data }}</textarea>
+            <textarea rows="10" cols="50" name='testData' class='border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-md' readonly>{{ json_data }}</textarea>
             <input type='checkbox' name='checkbrowzer' checked hidden />
             <button type='submit' class='bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 p-2 uppercase text-blue-200 font-semibold rounded-md' name='get_data'>Get data</button>
             {% if data_received %}
