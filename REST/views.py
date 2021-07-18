@@ -22,7 +22,7 @@ def create_data(mtype):
     if mtype == 'post':
         # creating random ten series
         for i in range(0, 10):
-            data_series = pd.util.testing.rands_array(10, 50)
+            data_series = pd.util.testing.rands_array(10, 500)
             test_data[f'column{i+1}'] = data_series
         
         test_data = pd.DataFrame(test_data)
