@@ -8,17 +8,20 @@
     <title>PUT</title>
 </head>
 <body>
-    <form class='border-2 border-black' action="{% url 'REST:put' %}" method="POST">
+    {% include 'REST/components/navbar.html' %}
+    <form class='h-2/3 bg-blue-200 w-1/3 shadow-xl m-auto mt-8 flex justify-center items-center p-4' action="{% url 'REST:put' %}" method="POST">
         {% csrf_token %}
         <div class=''>
             <!-- <textarea rows="10" cols="50" name='testData'>{{ json_data|truncatewords_html:100 }}</textarea> -->
-            <textarea rows="10" cols="50" name='testData'>{{ json_data }}</textarea>
+            <textarea rows="10" cols="50" name='testData' class='border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded-md'>{{ json_data }}</textarea>
             <input type='checkbox' name='checkbrowzer' checked hidden />
-            <button type='submit' class='border-2 border-black' name='simple_put'>PUT data</button>
-            <button type='submit' class='border-2 border-black' name='parallel_put'>Parallel PUT data</button>
+            <button type='submit' class='bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 p-2 uppercase text-blue-200 font-semibold rounded-md' name='simple_put'>Simple PUT</button>
+            <button type='submit' class='bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 p-2 uppercase text-blue-200 font-semibold rounded-md' name='parallel_put'>Parallel PUT</button>
         </div>
     </form>
-    <a href="{% url 'REST:view_data' %}">All test data</a>
-    <a href="{% url 'REST:dbtable' %}">See DB table</a>
+    <!-- <a href="{% url 'REST:view_data' %}">All test data</a> -->
+    <div class="w-40 text-center m-auto p-2 mt-2 bg-green-400 p-2 rounded-md font-semibold text-green-800 focus:ring-2 focus:ring-green-700 uppercase">
+        <a href="{% url 'REST:dbtable' %}" class="">See DB table</a>
+    </div>
 </body>
 </html>

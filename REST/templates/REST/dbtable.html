@@ -13,7 +13,7 @@
     {% include 'REST/components/navbar.html' %}
     <div>
         <form method="POST" action="{% url 'REST:dbtable' %}">{% csrf_token %}
-            <button type="submit">Delete all entries</button>
+            <button type="submit" class='bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 p-1 uppercase text-blue-100 font-semibold rounded-md mt-2'>Delete all entries</button>
         </form>
         <table id="example" class="display" style="width:100%">
             <thead>
